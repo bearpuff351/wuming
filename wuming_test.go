@@ -27,7 +27,10 @@ func TestWumingRedact(t *testing.T) {
 		},
 	}
 
-	w := New(WithDetectors(det))
+	w, err := New(WithDetectors(det))
+	if err != nil {
+		t.Fatal(err)
+	}
 	got, err := w.Redact(context.Background(), "Email me: john@example.com please")
 	if err != nil {
 		t.Fatal(err)
@@ -46,7 +49,10 @@ func TestWumingDetect(t *testing.T) {
 		},
 	}
 
-	w := New(WithDetectors(det))
+	w, err := New(WithDetectors(det))
+	if err != nil {
+		t.Fatal(err)
+	}
 	matches, err := w.Detect(context.Background(), "Call 555-1234")
 	if err != nil {
 		t.Fatal(err)
@@ -66,7 +72,10 @@ func TestWumingProcess(t *testing.T) {
 		},
 	}
 
-	w := New(WithDetectors(det))
+	w, err := New(WithDetectors(det))
+	if err != nil {
+		t.Fatal(err)
+	}
 	result, err := w.Process(context.Background(), "a@b.com")
 	if err != nil {
 		t.Fatal(err)
@@ -87,7 +96,10 @@ func TestWumingProcess(t *testing.T) {
 var _ port.Detector = (*stubDetector)(nil)
 
 func TestZeroConfigNew(t *testing.T) {
-	w := New()
+	w, err := New()
+	if err != nil {
+		t.Fatal(err)
+	}
 	text := "Email john@example.com and SSN 078-05-1120"
 	result, err := w.Process(context.Background(), text)
 	if err != nil {
@@ -119,7 +131,10 @@ func TestPackageLevelDetect(t *testing.T) {
 }
 
 func TestWithPresetGDPR(t *testing.T) {
-	w := New(WithPreset("gdpr"))
+	w, err := New(WithPreset("gdpr"))
+	if err != nil {
+		t.Fatal(err)
+	}
 	// GDPR should detect email (common locale).
 	text := "Email john@example.com"
 	result, err := w.Process(context.Background(), text)
@@ -132,7 +147,10 @@ func TestWithPresetGDPR(t *testing.T) {
 }
 
 func TestWithPresetHIPAA(t *testing.T) {
-	w := New(WithPreset("hipaa"))
+	w, err := New(WithPreset("hipaa"))
+	if err != nil {
+		t.Fatal(err)
+	}
 	// HIPAA should detect SSN (us locale, NationalID type).
 	text := "SSN: 078-05-1120"
 	result, err := w.Process(context.Background(), text)
@@ -151,7 +169,10 @@ func TestWithPresetHIPAA(t *testing.T) {
 }
 
 func TestWithPresetPCIDSS(t *testing.T) {
-	w := New(WithPreset("pci-dss"))
+	w, err := New(WithPreset("pci-dss"))
+	if err != nil {
+		t.Fatal(err)
+	}
 	// PCI-DSS should detect credit cards.
 	text := "Card: 4111 1111 1111 1111"
 	result, err := w.Process(context.Background(), text)
@@ -169,13 +190,17 @@ func TestWithPresetPCIDSS(t *testing.T) {
 	}
 }
 
-func TestWithPresetUnknownPanics(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Error("WithPreset(\"nonexistent\") should panic")
-		}
-	}()
-	New(WithPreset("nonexistent"))
+func TestWithPresetUnknownReturnsError(t *testing.T) {
+	w, err := New(WithPreset("nonexistent"))
+	if err == nil {
+		t.Error("WithPreset(\"nonexistent\") should return an error, got nil")
+	}
+	if w != nil {
+		t.Error("WithPreset(\"nonexistent\") should return nil Wuming, got non-nil")
+	}
+	if err != nil && !strings.Contains(err.Error(), "nonexistent") {
+		t.Errorf("error should mention the unknown preset name, got: %v", err)
+	}
 }
 
 func TestWithAllowlist(t *testing.T) {
@@ -186,7 +211,10 @@ func TestWithAllowlist(t *testing.T) {
 		},
 	}
 
-	w := New(WithDetectors(det), WithAllowlist("example.com"))
+	w, err := New(WithDetectors(det), WithAllowlist("example.com"))
+	if err != nil {
+		t.Fatal(err)
+	}
 	matches, err := w.Detect(context.Background(), "john@example.com or example.com here")
 	if err != nil {
 		t.Fatal(err)
@@ -203,7 +231,10 @@ func TestWithAllowlist(t *testing.T) {
 func TestWithDenylist(t *testing.T) {
 	det := &stubDetector{} // no matches from detector
 
-	w := New(WithDetectors(det), WithDenylist(model.Name, "ACME Corp"))
+	w, err := New(WithDetectors(det), WithDenylist(model.Name, "ACME Corp"))
+	if err != nil {
+		t.Fatal(err)
+	}
 	result, err := w.Process(context.Background(), "Contact ACME Corp for details")
 	if err != nil {
 		t.Fatal(err)
@@ -228,11 +259,14 @@ func TestWithAllowlistAndDenylist(t *testing.T) {
 		},
 	}
 
-	w := New(
+	w, err := New(
 		WithDetectors(det),
 		WithAllowlist("example.com"),
 		WithDenylist(model.Name, "ACME"),
 	)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	result, err := w.Process(context.Background(), "example.com by ACME")
 	if err != nil {
@@ -248,7 +282,10 @@ func TestWithAllowlistAndDenylist(t *testing.T) {
 }
 
 func TestWithLocaleFilters(t *testing.T) {
-	w := New(WithLocale("nl"))
+	w, err := New(WithLocale("nl"))
+	if err != nil {
+		t.Fatal(err)
+	}
 	// BSN should be detected, SSN should not (US-specific).
 	text := "BSN: 123456782, SSN: 078-05-1120"
 	result, err := w.Process(context.Background(), text)
